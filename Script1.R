@@ -47,11 +47,6 @@ hist(df3$daily_steps,breaks=10)
 
 ## What is the average daily activity pattern?
 
- # <tbd>
-
-
-
-
 steps_by_interval <- df2 %>% group_by ( interval ) %>% 
   summarize (sum_steps = sum(steps, na.rm=TRUE), 
              mean_steps = mean(steps, na.rm=TRUE),
@@ -59,6 +54,23 @@ steps_by_interval <- df2 %>% group_by ( interval ) %>%
              count_steps = sum(!is.na(steps)))
 steps_by_interval <- steps_by_interval %>% mutate (row_index = as.integer( (interval + 5) / 5) )
 steps_by_interval
+
+### Plot the timeline of average steps versus interval, averaged across all days
+g <- ggplot(steps_by_interval, mapping=aes(x=interval, y=mean_steps)) + geom_line()
+g
+
+### Determine the maximum average step value across intervals.
+
+max_steps <- max( steps_by_interval$mean_steps)
+max_steps
+
+### Determine which time interval has the max_steps value.
+max_steps_interval <- steps_by_interval[steps_by_interval$mean_steps == max_steps, ]$interval
+max_steps_interval
+
+## Apparently the largest number of average steps 206.1698 occurred at interval
+## 835 or 8:35 a.m.
+
 
 
 ## Imputing Missing Values
@@ -99,9 +111,10 @@ impute_row <- function(row_index) {
   impute_step_value(df2$steps[row_index], df2$interval[row_index])
 }
 
-### Create a vector of the original or imputed step values.
+### Create a vector of the original step values merged with imputed step values.
 steps_imputed <- sapply(1:nrow(df2), impute_row)
 
+### Form a new data.frame with selected columns  and including the imputed step values.
 imputed_steps_df <- df2 %>% select( date, interval, converted_date ) %>% cbind(steps_imputed)
 imputed_steps_df
 summary(imputed_steps_df)
@@ -116,4 +129,4 @@ median(daily_df$daily_steps)
 original_median
 
 
-
+hist(daily_df$daily_steps,breaks=10)
