@@ -57,6 +57,9 @@ steps_by_interval
 
 ### Plot the timeline of average steps versus interval, averaged across all days
 g <- ggplot(steps_by_interval, mapping=aes(x=interval, y=mean_steps)) + geom_line()
+g <- g + xlab("interval -- time of day (HH:MM)")
+g <- g + ylab("Average steps per interval across all days")
+g <- g + ggtitle("Timeline of Average Steps per Interval")
 g
 
 ### Determine the maximum average step value across intervals.
@@ -75,14 +78,31 @@ max_steps_interval
 
 ## Imputing Missing Values
 
-## Verify we get the same average steps per day from sum of steps_by_interval divided by days with data.
-original_mean
+### 1. Calculate and report the total number of missing values in the dataset
+### (i.e. the total number of rows with `NA`s)
 
-sum(steps_by_interval$sum_steps)/53
+summary(df2)
 
-sum(steps_by_interval$mean_steps)
+### The summary function shows that 2304 values of steps are NA.
 
-sum(steps_by_interval$average_steps_integer)
+dates_with_na_steps <- df2 %>% filter(is.na(steps)) %>% 
+  group_by(date) %>% summarize(count_of_nas =n())
+dates_with_na_steps
+
+### It turns out that there are 288 5-minute intervals each day,
+### and we are missing all of the steps data on 8 full days.
+### This accounts for all of the 2304 = 8 * 288 missing values.
+
+## (REMOVE) Verify we get the same average steps per day from sum of steps_by_interval divided by days with data.
+## original_mean
+## sum(steps_by_interval$sum_steps)/53
+## sum(steps_by_interval$mean_steps)
+## sum(steps_by_interval$average_steps_integer)
+
+## 2. Devise a strategy for filling in all of the missing values in the dataset. 
+## The strategy does not need to be sophisticated. For example, 
+## you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+## 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 ### Create a function to replace a missing step value
 ### with the corresponding average for that 5 minute interval
@@ -119,9 +139,17 @@ imputed_steps_df <- df2 %>% select( date, interval, converted_date ) %>% cbind(s
 imputed_steps_df
 summary(imputed_steps_df)
 
-### df3 <- df2 %>% group_by( converted_date ) %>% summarize(daily_steps = sum(steps), missing_steps = sum(na_steps))
+
 ### Group the data by date to sum total steps per day
 daily_df <- imputed_steps_df %>% group_by( converted_date ) %>% summarize(daily_steps = sum(steps_imputed))
+
+## 4. Make a histogram of the total number of steps taken each day and Calculate and 
+## report the **mean** and **median** total number of steps taken per day. 
+## Do these values differ from the estimates from the first part of the assignment? 
+## What is the impact of imputing missing data on the estimates of the total daily number of steps?
+  
+hist(daily_df$daily_steps,breaks=10)
+
 
 mean(daily_df$daily_steps)
 original_mean
@@ -129,4 +157,4 @@ median(daily_df$daily_steps)
 original_median
 
 
-hist(daily_df$daily_steps,breaks=10)
+
