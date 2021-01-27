@@ -157,4 +157,71 @@ median(daily_df$daily_steps)
 original_median
 
 
+# Are there differences in activity patterns between weekdays and weekends?
 
+## For this part the `weekdays()` function may be of some help here. Use
+## the dataset with the filled-in missing values for this part.
+
+## 1. Create a new factor variable in the dataset with two levels -- 
+## "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+
+## Define a new function to detect weekend days from day names.
+weekends <- function(day_of_week) {
+  if("Saturday" == day_of_week || "Sunday" == day_of_week)  {
+    weekend <- "weekend"
+  } else {
+    weekend <- "weekday"
+  }
+  weekend
+}
+
+new_dataset <- imputed_steps_df %>% 
+  mutate(day_of_week=weekdays(converted_date))
+
+day_type <- sapply(new_dataset$day_of_week, weekends)
+
+new_dataset <- cbind(new_dataset, day_type)
+  
+str(new_dataset)
+summary(new_dataset)
+
+## Make a panel plot containing a time series plot (i.e. `type = "l"`) of the
+## 5-minute interval (x-axis) and the average number of steps taken, 
+## averaged across all weekday days or weekend days (y-axis).
+
+steps_by_interval2 <- new_dataset %>% group_by ( interval, day_type ) %>% 
+  summarize (sum_steps = sum(steps_imputed), 
+             mean_steps = mean(steps_imputed))
+
+steps_by_interval2
+
+
+### Plot the timeline of average steps versus interval, averaged across all days
+### with weekdays versus weekends in separate panels
+g <- ggplot(steps_by_interval2, mapping=aes(x=interval, y=mean_steps)) + geom_line()
+g <- g + facet_grid(day_type ~ .)
+g <- g + xlab("interval -- time of day (HH:MM)")
+g <- g + ylab("Average steps per interval across all days")
+g <- g + ggtitle("Timeline of Average Steps per Interval (Weekdays vs. Weekends)")
+g
+
+
+
+
+
+
+         
+
+
+
+
+
+
+weekends("Monday")
+
+
+  
+}
+## 2. Make a panel plot containing a time series plot (i.e. `type = "l"`) 
+## of the 5-minute interval (x-axis) and the average number of steps taken, 
+## averaged across all weekday days or weekend days (y-axis)
