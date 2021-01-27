@@ -12,41 +12,7 @@ output:
 
 ```r
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 library(lubridate)
-```
-
-```
-## 
-## Attaching package: 'lubridate'
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     date, intersect, setdiff, union
-```
-
-```r
 library(ggplot2)
 ```
 
@@ -181,22 +147,14 @@ summary(df2)
 ```
 
 ```
-##      steps                date          interval      converted_date      
-##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0   Min.   :2012-10-01  
-##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8   1st Qu.:2012-10-16  
-##  Median :  0.00   2012-10-03:  288   Median :1177.5   Median :2012-10-31  
-##  Mean   : 37.38   2012-10-04:  288   Mean   :1177.5   Mean   :2012-10-31  
-##  3rd Qu.: 12.00   2012-10-05:  288   3rd Qu.:1766.2   3rd Qu.:2012-11-15  
-##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0   Max.   :2012-11-30  
-##  NA's   :2304     (Other)   :15840                                        
-##   na_steps             ID       
-##  Mode :logical   Min.   :    1  
-##  FALSE:15264     1st Qu.: 4393  
-##  TRUE :2304      Median : 8784  
-##                  Mean   : 8784  
-##                  3rd Qu.:13176  
-##                  Max.   :17568  
-## 
+##      steps                date          interval      converted_date        na_steps             ID       
+##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0   Min.   :2012-10-01   Mode :logical   Min.   :    1  
+##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8   1st Qu.:2012-10-16   FALSE:15264     1st Qu.: 4393  
+##  Median :  0.00   2012-10-03:  288   Median :1177.5   Median :2012-10-31   TRUE :2304      Median : 8784  
+##  Mean   : 37.38   2012-10-04:  288   Mean   :1177.5   Mean   :2012-10-31                   Mean   : 8784  
+##  3rd Qu.: 12.00   2012-10-05:  288   3rd Qu.:1766.2   3rd Qu.:2012-11-15                   3rd Qu.:13176  
+##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0   Max.   :2012-11-30                   Max.   :17568  
+##  NA's   :2304     (Other)   :15840
 ```
 
 ### The summary function shows that 2304 values of steps are NA.
@@ -375,7 +333,7 @@ str(new_dataset)
 ## 'data.frame':	17568 obs. of  6 variables:
 ##  $ date          : Factor w/ 61 levels "2012-10-01","2012-10-02",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ interval      : int  0 5 10 15 20 25 30 35 40 45 ...
-##  $ converted_date: Date, format: "2012-10-01" "2012-10-01" ...
+##  $ converted_date: Date, format: "2012-10-01" "2012-10-01" "2012-10-01" "2012-10-01" ...
 ##  $ steps_imputed : int  2 0 0 0 0 2 1 1 0 1 ...
 ##  $ day_of_week   : chr  "Monday" "Monday" "Monday" "Monday" ...
 ##  $ day_type      : Factor w/ 2 levels "weekday","weekend": 1 1 1 1 1 1 1 1 1 1 ...
@@ -386,22 +344,14 @@ summary(new_dataset)
 ```
 
 ```
-##          date          interval      converted_date       steps_imputed   
-##  2012-10-01:  288   Min.   :   0.0   Min.   :2012-10-01   Min.   :  0.00  
-##  2012-10-02:  288   1st Qu.: 588.8   1st Qu.:2012-10-16   1st Qu.:  0.00  
-##  2012-10-03:  288   Median :1177.5   Median :2012-10-31   Median :  0.00  
-##  2012-10-04:  288   Mean   :1177.5   Mean   :2012-10-31   Mean   : 37.38  
-##  2012-10-05:  288   3rd Qu.:1766.2   3rd Qu.:2012-11-15   3rd Qu.: 27.00  
-##  2012-10-06:  288   Max.   :2355.0   Max.   :2012-11-30   Max.   :806.00  
-##  (Other)   :15840                                                         
-##  day_of_week           day_type    
-##  Length:17568       weekday:12960  
-##  Class :character   weekend: 4608  
-##  Mode  :character                  
-##                                    
-##                                    
-##                                    
-## 
+##          date          interval      converted_date       steps_imputed    day_of_week           day_type    
+##  2012-10-01:  288   Min.   :   0.0   Min.   :2012-10-01   Min.   :  0.00   Length:17568       weekday:12960  
+##  2012-10-02:  288   1st Qu.: 588.8   1st Qu.:2012-10-16   1st Qu.:  0.00   Class :character   weekend: 4608  
+##  2012-10-03:  288   Median :1177.5   Median :2012-10-31   Median :  0.00   Mode  :character                  
+##  2012-10-04:  288   Mean   :1177.5   Mean   :2012-10-31   Mean   : 37.38                                     
+##  2012-10-05:  288   3rd Qu.:1766.2   3rd Qu.:2012-11-15   3rd Qu.: 27.00                                     
+##  2012-10-06:  288   Max.   :2355.0   Max.   :2012-11-30   Max.   :806.00                                     
+##  (Other)   :15840
 ```
 
 ## Make a panel plot containing a time series plot (i.e. `type = "l"`) of the
