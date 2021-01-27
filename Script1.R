@@ -21,8 +21,6 @@ df3 <- df2 %>% group_by( converted_date ) %>% summarize(daily_steps = sum(steps)
 
 ## What is mean total number of steps taken per day?
 
-### Show the number of steps each day in a bar chart
-ggplot(df3, mapping=aes(x=converted_date, y=daily_steps)) + geom_bar(stat = "identity")
 
 ### Show the mean number of daily steps
 original_mean <- mean(df3$daily_steps, na.rm = TRUE )
@@ -31,6 +29,10 @@ original_mean
 ### SHow the median for daily steps
 original_median <- median(df3$daily_steps, na.rm = TRUE )
 original_median
+
+### Show the number of steps each day in a bar chart
+ggplot(df3, mapping=aes(x=converted_date, y=daily_steps)) + geom_bar(stat = "identity")
+
 
 ### show a histogram of frequency values for daily steps
 hist(df3$daily_steps,breaks=10)
