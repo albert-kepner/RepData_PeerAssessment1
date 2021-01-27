@@ -1,33 +1,23 @@
 ## Script1.R
+## Loading and preprocessing the data
 
 ### Load libraries
 library(dplyr)
 library(lubridate)
 library(ggplot2)
 
-### Unzip and Load the data file
+### Unzip and Load the data file  
+### Read the file activity.csv into an R data frame  
+### Preprocess the data to summarize the number of steps each day.
 zipfile <- "activity.zip"
 exdir = "data"
 unzip(zipfile, exdir=exdir)
-
-## Loading and preprocessing the data
-
-### Read the file activity.csv into an R data frame.
 infile <- "data/activity.csv"
 df <- read.csv(infile)
-str(df)
-
-
-
 df2 <- df %>% mutate (converted_date = ymd(date), na_steps = is.na(steps), ID = row_number())
-
-str(df2)
-summary (df2)
-glimpse( df2)
-
 df3 <- df2 %>% group_by( converted_date ) %>% summarize(daily_steps = sum(steps), missing_steps = sum(na_steps))
 
-df3
+
 
 ## What is mean total number of steps taken per day?
 
